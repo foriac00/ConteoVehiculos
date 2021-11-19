@@ -3,29 +3,17 @@ import time
 import numpy as np
 
 # Create our body classifier
-car_classifier = cv2.CascadeClassifier('cascade.xml')
+car_classifier = cv2.CascadeClassifier('haarcascade_car.xml')
 
-# Initiate video capture for video file
-cap = cv2.VideoCapture('image_examples/cars.avi')
+img = cv2.imread('input_examples/im1.jpg')
 
-# Loop once video is successfully loaded
-while cap.isOpened():
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    time.sleep(.05)
-    # Read first frame
-    ret, frame = cap.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+cars = car_classifier.detectMultiScale(gray, 1.01, 4)
 
-    # Pass frame to our car classifier
-    cars = car_classifier.detectMultiScale(gray, 1.02, 4)
+for (x, y, w, h) in cars:
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 255, 0), 2)
+        cv2.imshow('Cars', img)
 
-    # Extract bounding boxes for any bodies identified
-    for (x, y, w, h) in cars:
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 255), 2)
-        cv2.imshow('Cars', frame)
-
-    if cv2.waitKey(1) == 13:  # 13 is the Enter Key
-        break
-
-cap.release()
+cv2.waitKey(0)
 cv2.destroyAllWindows()
