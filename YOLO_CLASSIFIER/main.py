@@ -12,7 +12,7 @@ output_layers = [layer_names[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 colors = np.random.uniform(0, 255, size=(len(classes), 3))
 
 # Loading image
-img = cv2.imread("imagenes/test3.jpg")
+img = cv2.imread(sys.argv[1])
 height, width, channels = img.shape
 
 # Detecting objects
@@ -51,11 +51,11 @@ print(indexes)
 for i in range(len(boxes)):
     if i in indexes:
         x, y, w, h = boxes[i]
-        color = colors[class_ids[i]]
-        cv2.rectangle(img, (x, y), (x + w, y + h), color)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0))
         print 'Hay un coche en:','X', x, ',', 'Y', y
 
 print 'En la imagen hay', len(indexes), 'vehiculos'
+
 
 
 cv2.imshow("Image", img)
